@@ -1,15 +1,26 @@
 class ChoreBook
 {
-    // I made a change here!!!
     private String theTask;
-    private int month;
-    private int day;
-    private int year;
-    private String importance; //urgent... not urgent...
+    private String month;
+    private String day;
+    private String year;
+    private String importance;
     private String category;
     private String extraInfo;
 
-    public ChoreBook(String theTask, int month, int day, int year, String importance, String category, String extraInfo)
+
+//    public void theChoreBookMethod ()
+//    {
+//        theChoresBook[index].setCategory(categoryDropDown);
+//        theChoresBook[index].setDay(dayDropdown);
+//        theChoresBook[index].setExtraInfo(extraInfo);
+//        theChoresBook[index].setMonth(monthDropdown);
+//        theChoresBook[index].setTheTask(theTask);
+//        theChoresBook[index].setImportance(importanceDropDown);
+//        theChoresBook[index].setYear(yearDropdown);
+//    }
+
+    public ChoreBook(String theTask, String month, String day, String year, String importance, String category, String extraInfo)
     {
         this.theTask = theTask;
         this.month = month;
@@ -35,32 +46,32 @@ class ChoreBook
         this.theTask = theTask;
     }
 
-    public int getMonth()
+    public String getMonth()
     {
         return month;
     }
 
-    public void setMonth(int month)
+    public void setMonth(String month)
     {
         this.month = month;
     }
 
-    public int getDay()
+    public String getDay()
     {
         return day;
     }
 
-    public void setDay(int day)
+    public void setDay(String day)
     {
         this.day = day;
     }
 
-    public int getYear()
+    public String getYear()
     {
         return year;
     }
 
-    public void setYear(int year)
+    public void setYear(String year)
     {
         this.year = year;
     }
