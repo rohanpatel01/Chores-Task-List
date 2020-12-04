@@ -197,13 +197,13 @@ class ChoreBookRunner extends JFrame implements ActionListener
             if(clicked.equals(editButton))
             {
                 enableAndDisable(true);
-                theChoresBook[index].setTheTask(theTask.getText());
-                theChoresBook[index].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
-                theChoresBook[index].setDay(dayDropdown.getPrototypeDisplayValue());
-                theChoresBook[index].setCategory(String.valueOf(yearDropdown.getSelectedItem()));
-                theChoresBook[index].setTheTask(String.valueOf(importanceDropDown.getSelectedItem()));
-                theChoresBook[index].setTheTask(String.valueOf(categoryDropDown.getSelectedItem()));
-                theChoresBook[index].setTheTask(String.valueOf(extraInfo.getText()));
+//                theChoresBook[index].setTheTask(theTask.getText());
+//                theChoresBook[index].setDay((Integer) dayDropdown.getSelectedItem());
+//                theChoresBook[index].setCategory(String.valueOf(categoryDropDown.getSelectedItem()));
+//                theChoresBook[index].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
+//                theChoresBook[index].setYear((Integer) yearDropdown.getSelectedItem());
+//                theChoresBook[index].setImportance(String.valueOf(importanceDropDown.getSelectedItem()));
+//                theChoresBook[index].setExtraInfo(extraInfo.getText());
             }
         }
     }
@@ -215,35 +215,45 @@ class ChoreBookRunner extends JFrame implements ActionListener
             JButton clicked = (JButton)e.getSource();
             if(clicked.equals(saveButton))
             {
+                // fix on this. Change all the data types to string
                 enableAndDisable(false);
+                theChoresBook[index].setTheTask(theTask.getText());
+                theChoresBook[index].setDay(String.valueOf(dayDropdown.getSelectedItem()));
+                theChoresBook[index].setCategory(String.valueOf(categoryDropDown.getSelectedItem()));
+                theChoresBook[index].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
+                theChoresBook[index].setYear((Integer) yearDropdown.getSelectedItem());
+                theChoresBook[index].setImportance(String.valueOf(importanceDropDown.getSelectedItem()));
+                theChoresBook[index].setExtraInfo(extraInfo.getText());
             }
         }
     }
 
     public void addPage(ActionEvent e)
     {
-        if(e.getSource() instanceof JButton)
-        {
-            JButton clicked = (JButton)e.getSource();
-            if(clicked.equals(addPage))
-            {
-                //create new array that is one greater than the previous one
-                ChoreBook[] newBookWithNewPage = new ChoreBook[theChoresBook.length + 1];
+//        if(e.getSource() instanceof JButton)
+//        {
+//            JButton clicked = (JButton)e.getSource();
+//            if(clicked.equals(addPage))
+//            {
+//                //create new array that is one greater than the previous one
+//                ChoreBook[] newBookWithNewPage = new ChoreBook[theChoresBook.length + 1];
+//
+//                // for loop puts all old info into larger new-page array
+//                for (int i = 0; i < theChoresBook.length; i++)
+//                {
+//                    newBookWithNewPage[i] = theChoresBook[i];
+//                }
+//
+//                // make the original array update to the new longer array with new page
+//                theChoresBook = newBookWithNewPage;
+//                System.out.println(Arrays.toString(theChoresBook));
+//                theChoresBook[theChoresBook.length - 1].setTheTask("Move the book");
+//
+//            }
+//        }
 
-                // for loop puts all old info into larger new-page array
-                for (int i = 0; i < theChoresBook.length; i++)
-                {
-                    newBookWithNewPage[i] = theChoresBook[i];
-                }
-
-                // make the original array update to the new longer array with new page
-                theChoresBook = newBookWithNewPage;
-                System.out.println(Arrays.toString(theChoresBook));
-                theChoresBook[theChoresBook.length - 1].setTheTask("Move the book");
-
-            }
-        }
-
+//        System.out.println(theChoresBook[index].getTheTask());
+        System.out.println(Arrays.toString(theChoresBook));
     }
 
     public void dummyData()
