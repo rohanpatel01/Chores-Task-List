@@ -1,8 +1,7 @@
 // Name: Rohan Patel
 //Partner: Pujan Pathak
 
-// fix the importance and the category being numbers rather than words
-// change 9:47
+
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
