@@ -24,13 +24,15 @@ class ChoreBookRunner extends JFrame implements ActionListener
     private JButton editButton;
     private JButton previousPage;
     private JButton nextPage;
-    private ChoreBook[] theChoresBook = new ChoreBook[2];
+    private JLabel thePageNumber;
+    private ChoreBook[] theChoresBook = new ChoreBook[1];
     private String[] monthArray;
     private String[] dayArray;
     private String[] yearArray;
     private String[] importanceArray;
     private String[] categoryArray;
 
+    private int pageNumber = 0;
     private int index = 0;
 
     public void createPageForBook()
@@ -102,7 +104,7 @@ class ChoreBookRunner extends JFrame implements ActionListener
         theTask.setBackground(Color.white);
         theTask.addActionListener(this);
         theTask.setText("Type You Chore");
-        theTask.setEnabled(false);
+        theTask.setEditable(false);
 
         // enter in all the drop down menus
         monthArray = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -141,10 +143,11 @@ class ChoreBookRunner extends JFrame implements ActionListener
         categoryDropDown.setBounds(40,400,280,80);
 
         extraInfo = new JTextArea();
-        extraInfo.setBounds(400,400,280,280);
+        extraInfo.setBounds(400,400,280,200);
         extraInfo.setFont(new Font("Arial", Font.BOLD,30));
         extraInfo.setBackground(Color.white);
         extraInfo.setEnabled(false);
+        extraInfo.setLineWrap(true);
         window.add(extraInfo);
 
         saveButton = new JButton();
@@ -181,13 +184,21 @@ class ChoreBookRunner extends JFrame implements ActionListener
         nextPage.addActionListener(this);
         window.add(nextPage);
 
+        thePageNumber = new JLabel();
+        thePageNumber.setBounds(440,640,200,40);
+        thePageNumber.setText("Page 0");
+        thePageNumber.setFont(new Font("Arial", Font.BOLD,30));
+        thePageNumber.setOpaque(true);
+        thePageNumber.setBackground(Color.WHITE);
+        window.add(thePageNumber);
+
         //gets from the book and put in on screen
         // next / previous page
-        theTask.setText(theChoresBook[index].getTheTask());
+        //theTask.setText(theChoresBook[index].getTheTask());
 
         //get from the screen and put in the book
         // save method
-        theChoresBook[index].setTheTask(theTask.getText());
+        //theChoresBook[index].setTheTask(theTask.getText());
     }
 
     /***
@@ -245,39 +256,21 @@ class ChoreBookRunner extends JFrame implements ActionListener
 
                 // make the original array update to the new longer array with new page
                 theChoresBook = newBookWithNewPage;
-//                newBookWithNewPage[index + 1].setTheTask(theTask.getText());
-//                newBookWithNewPage[index + 1].setDay(String.valueOf(dayDropdown.getSelectedItem()));
-//                newBookWithNewPage[index + 1].setCategory(String.valueOf(categoryDropDown.getSelectedItem()));
-//                newBookWithNewPage[index + 1].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
-//                newBookWithNewPage[index + 1].setYear(String.valueOf(yearDropdown.getSelectedItem()));
-//                newBookWithNewPage[index + 1].setImportance(String.valueOf(importanceDropDown.getSelectedItem()));
-//                newBookWithNewPage[index + 1].setExtraInfo(extraInfo.getText());
+                pageNumber++;
+                theChoresBook[pageNumber] = new ChoreBook();
+                System.out.println("The length of the chore Length" + theChoresBook.length);
+
+                // make it so that we also create another page in the 'theChoreBook" class and array so we can create
+                // room for this new page that we're making. Also helps us access it when we're flipping through it!
+
 
 
             }
         }
 
-        System.out.println(Arrays.toString(theChoresBook));
     }
 
 
-//    public void dummyData()
-//    {
-//        for (int i = 0; i < 6; i++)
-//        {
-//            // set all values of new pages to dummy data
-//            theChoresBook[index + 1].setTheTask("Task 1");
-//            theChoresBook[index + 1].setMonth(monthArray[0]);
-//            theChoresBook[index + 1].setDay(dayArray[0]);
-//            theChoresBook[index + 1].setYear(yearArray[0]);
-//            theChoresBook[index + 1].setImportance(importanceArray[0]);
-//            theChoresBook[index + 1].setCategory(categoryArray[0]);
-//            theChoresBook[index + 1].setExtraInfo("Include a more detailed description of your task.");
-//
-//
-//
-//        }
-//    }
 
     public void nextPageMethod(ActionEvent e)
     {
@@ -288,21 +281,92 @@ class ChoreBookRunner extends JFrame implements ActionListener
             JButton clicked = (JButton) e.getSource();
             if (clicked.equals(nextPage))
             {
-                if (theChoresBook.length > 1)
+                if (theChoresBook.length > 1 && index != theChoresBook.length -1 )
                 {
+
                     index++;
+                    newDisplay();
+                    thePageNumber.setText("Page #:" + index );
                 }
                 // theTask.setText(theChoresBook[index].getTheTask());
                 // we need to set the value of the drop down so it shows when we flip through the book
-                theTask.setText(theChoresBook[index].getTheTask());
-                monthDropdown.setSelectedItem(theChoresBook[index].getMonth());
-                dayDropdown.setSelectedItem(theChoresBook[index].getDay());
-                yearDropdown.setSelectedItem(theChoresBook[index].getYear());
-                importanceDropDown.setSelectedItem(theChoresBook[index].getImportance());
-                categoryDropDown.setSelectedItem(theChoresBook[index].getCategory());
-                extraInfo.setText(theChoresBook[index].getExtraInfo());
+                //newDisplay();
             }
         }
+    }
+
+
+    public void deletePage(ActionEvent e)
+    {
+        if (e.getSource() instanceof JButton)
+        {
+            JButton clicked = (JButton) e.getSource();
+            if (clicked.equals(deletePage))
+            {
+                ChoreBook[] newBookWithoutNewPage = new ChoreBook[theChoresBook.length - 1];
+
+                // copies all info from original array to new array
+                for (int i = 0; i < theChoresBook.length; i++)
+                {
+                    if (i != pageNumber)
+                    {
+                        newBookWithoutNewPage[i] = theChoresBook[i];
+                    }
+
+                }
+
+                // make the original array update to the new longer array with new page
+                theChoresBook = newBookWithoutNewPage;
+                pageNumber--;
+                //theChoresBook[pageNumber] = new ChoreBook();
+
+                // sets new index
+                int newIndex = index;
+                newIndex = index - 1;
+                index = newIndex;
+
+                newDisplay();
+
+                System.out.println("The length of the chore Length" + theChoresBook.length);
+
+            }
+        }
+    }
+
+    public void previousPageMethod(ActionEvent e)
+    {
+        if(e.getSource() instanceof JButton)
+        {
+            JButton clicked = (JButton) e.getSource();
+            if (clicked.equals(previousPage))
+            {
+
+                if (index != 0)
+                {
+                    index--;
+                    System.out.println("PageNumber:" + index);
+                    newDisplay();
+                    thePageNumber.setText("Page #:" + index);
+
+                }
+
+            }
+        }
+    }
+
+    /***
+     * Puts the book info up to the screen
+     */
+    public void newDisplay()
+    {
+        theTask.setText(theChoresBook[index].getTheTask());
+        monthDropdown.setSelectedItem(theChoresBook[index].getMonth());
+        dayDropdown.setSelectedItem(theChoresBook[index].getDay());
+        yearDropdown.setSelectedItem(theChoresBook[index].getYear());
+        importanceDropDown.setSelectedItem(theChoresBook[index].getImportance());
+        categoryDropDown.setSelectedItem(theChoresBook[index].getCategory());
+        extraInfo.setText(theChoresBook[index].getExtraInfo());
+
     }
 
     /**
@@ -311,13 +375,14 @@ class ChoreBookRunner extends JFrame implements ActionListener
      */
     public void enableAndDisable(boolean on)
     {
-        theTask.setEnabled(on);
+        theTask.setEditable(on);
         monthDropdown.setEnabled(on);
         dayDropdown.setEnabled(on);
         yearDropdown.setEnabled(on);
         importanceDropDown.setEnabled(on);
         categoryDropDown.setEnabled(on);
         extraInfo.setEnabled(on);
+
     }
 
 
@@ -327,7 +392,9 @@ class ChoreBookRunner extends JFrame implements ActionListener
         edit(e);
         save(e);
         addPage(e);
+        previousPageMethod(e);
         nextPageMethod(e);
+        deletePage(e);
     }
 
     public static void main(String[] args)
