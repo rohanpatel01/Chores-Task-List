@@ -8,18 +8,6 @@ class ChoreBook
     private String category;
     private String extraInfo;
 
-
-//    public void theChoreBookMethod ()
-//    {
-//        theChoresBook[index].setCategory(categoryDropDown);
-//        theChoresBook[index].setDay(dayDropdown);
-//        theChoresBook[index].setExtraInfo(extraInfo);
-//        theChoresBook[index].setMonth(monthDropdown);
-//        theChoresBook[index].setTheTask(theTask);
-//        theChoresBook[index].setImportance(importanceDropDown);
-//        theChoresBook[index].setYear(yearDropdown);
-//    }
-
     public ChoreBook(String theTask, String month, String day, String year, String importance, String category, String extraInfo)
     {
         this.theTask = theTask;

@@ -24,26 +24,29 @@ class ChoreBookRunner extends JFrame implements ActionListener
     private JButton editButton;
     private JButton previousPage;
     private JButton nextPage;
-    private ChoreBook[] theChoresBook = new ChoreBook[1];
+    private ChoreBook[] theChoresBook = new ChoreBook[2];
+    private String[] monthArray;
+    private String[] dayArray;
+    private String[] yearArray;
+    private String[] importanceArray;
+    private String[] categoryArray;
+
     private int index = 0;
+
+    public void createPageForBook()
+    {
+        for (int i = 0; i < theChoresBook.length; i++)
+        {
+            theChoresBook[i] = new ChoreBook();
+        }
+    }
 
     public ChoreBookRunner()  //constructor
     {
         setupWindow();
-        theChoresBook[0] = new ChoreBook();
+        createPageForBook();
         addThingsToWindow();
     }
-
-//    public void theChoreBookMethod ()
-//    {
-//        theChoresBook[theChoresBook.length - 1].setCategory(categoryDropDown);
-//        theChoresBook[theChoresBook.length - 1].setDay(dayDropdown);
-//        theChoresBook[theChoresBook.length - 1].setExtraInfo(extraInfo);
-//        theChoresBook[theChoresBook.length - 1].setMonth(monthDropdown);
-//        theChoresBook[theChoresBook.length - 1].setTheTask(theTask);
-//        theChoresBook[theChoresBook.length - 1].setImportance(importanceDropDown);
-//        theChoresBook[theChoresBook.length - 1].setYear(yearDropdown);
-//    }
 
 
 
@@ -102,36 +105,36 @@ class ChoreBookRunner extends JFrame implements ActionListener
         theTask.setEnabled(false);
 
         // enter in all the drop down menus
-        String[] monthArray = {"January", "February", "March","April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        monthArray = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         monthDropdown = new JComboBox(monthArray);
         monthDropdown.addActionListener(this);
         window.add(monthDropdown);
         monthDropdown.setEnabled(false);
         monthDropdown.setBounds(40,240,80,40);
 
-        Integer[] dayArray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ,21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+        dayArray =  new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" ,"21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
         dayDropdown = new JComboBox(dayArray);
         dayDropdown.addActionListener(this);
         window.add(dayDropdown);
         dayDropdown.setEnabled(false);
         dayDropdown.setBounds(160,240,80,40);
 
-        Integer[] yearArray = {2020, 2021, 2022, 2023, 2024, 2025};
+        yearArray = new String[]{"2020", "2021", "2022", "2023", "2024", "2025"};
         yearDropdown = new JComboBox(yearArray);
         yearDropdown.addActionListener(this);
         window.add(yearDropdown);
         yearDropdown.setEnabled(false);
         yearDropdown.setBounds(280,240,80,40);
 
-        String[] importance = {"Urgent and Important", "Urgent and Not Important", "Not Urgent and Important", "Not Urgent and Not Important"};
-        importanceDropDown = new JComboBox(importance);
+        importanceArray = new String[]{"Urgent and Important", "Urgent and Not Important", "Not Urgent and Important", "Not Urgent and Not Important"};
+        importanceDropDown = new JComboBox(importanceArray);
         importanceDropDown.addActionListener(this);
         window.add(importanceDropDown);
         importanceDropDown.setEnabled(false);
         importanceDropDown.setBounds(40,320,640,40);
 
-        String[] category = {"Work", "School", "Personal"};
-        categoryDropDown = new JComboBox(category);
+        categoryArray = new String[]{"Work", "School", "Personal"};
+        categoryDropDown = new JComboBox(categoryArray);
         categoryDropDown.addActionListener(this);
         window.add(categoryDropDown);
         categoryDropDown.setEnabled(false);
@@ -179,9 +182,11 @@ class ChoreBookRunner extends JFrame implements ActionListener
         window.add(nextPage);
 
         //gets from the book and put in on screen
+        // next / previous page
         theTask.setText(theChoresBook[index].getTheTask());
 
         //get from the screen and put in the book
+        // save method
         theChoresBook[index].setTheTask(theTask.getText());
     }
 
@@ -197,13 +202,6 @@ class ChoreBookRunner extends JFrame implements ActionListener
             if(clicked.equals(editButton))
             {
                 enableAndDisable(true);
-//                theChoresBook[index].setTheTask(theTask.getText());
-//                theChoresBook[index].setDay((Integer) dayDropdown.getSelectedItem());
-//                theChoresBook[index].setCategory(String.valueOf(categoryDropDown.getSelectedItem()));
-//                theChoresBook[index].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
-//                theChoresBook[index].setYear((Integer) yearDropdown.getSelectedItem());
-//                theChoresBook[index].setImportance(String.valueOf(importanceDropDown.getSelectedItem()));
-//                theChoresBook[index].setExtraInfo(extraInfo.getText());
             }
         }
     }
@@ -215,60 +213,76 @@ class ChoreBookRunner extends JFrame implements ActionListener
             JButton clicked = (JButton)e.getSource();
             if(clicked.equals(saveButton))
             {
-                // fix on this. Change all the data types to string
                 enableAndDisable(false);
                 theChoresBook[index].setTheTask(theTask.getText());
                 theChoresBook[index].setDay(String.valueOf(dayDropdown.getSelectedItem()));
                 theChoresBook[index].setCategory(String.valueOf(categoryDropDown.getSelectedItem()));
                 theChoresBook[index].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
-                theChoresBook[index].setYear((Integer) yearDropdown.getSelectedItem());
+                theChoresBook[index].setYear(String.valueOf(yearDropdown.getSelectedItem()));
                 theChoresBook[index].setImportance(String.valueOf(importanceDropDown.getSelectedItem()));
                 theChoresBook[index].setExtraInfo(extraInfo.getText());
             }
         }
     }
-
+    // fill in the arrays of the new page with dummy data
     public void addPage(ActionEvent e)
     {
-//        if(e.getSource() instanceof JButton)
-//        {
-//            JButton clicked = (JButton)e.getSource();
-//            if(clicked.equals(addPage))
-//            {
-//                //create new array that is one greater than the previous one
-//                ChoreBook[] newBookWithNewPage = new ChoreBook[theChoresBook.length + 1];
-//
-//                // for loop puts all old info into larger new-page array
-//                for (int i = 0; i < theChoresBook.length; i++)
-//                {
-//                    newBookWithNewPage[i] = theChoresBook[i];
-//                }
-//
-//                // make the original array update to the new longer array with new page
-//                theChoresBook = newBookWithNewPage;
-//                System.out.println(Arrays.toString(theChoresBook));
-//                theChoresBook[theChoresBook.length - 1].setTheTask("Move the book");
-//
-//            }
-//        }
+        if(e.getSource() instanceof JButton)
+        {
+            JButton clicked = (JButton)e.getSource();
+            if(clicked.equals(addPage))
+            {
+                //dummyData();
+                //create new array that is one greater than the previous one
+                ChoreBook[] newBookWithNewPage = new ChoreBook[theChoresBook.length + 1];
 
-//        System.out.println(theChoresBook[index].getTheTask());
+                // for loop puts all old info into larger new-page array
+                for (int i = 0; i < theChoresBook.length; i++)
+                {
+                    newBookWithNewPage[i] = theChoresBook[i];
+
+                }
+
+                // make the original array update to the new longer array with new page
+                theChoresBook = newBookWithNewPage;
+//                newBookWithNewPage[index + 1].setTheTask(theTask.getText());
+//                newBookWithNewPage[index + 1].setDay(String.valueOf(dayDropdown.getSelectedItem()));
+//                newBookWithNewPage[index + 1].setCategory(String.valueOf(categoryDropDown.getSelectedItem()));
+//                newBookWithNewPage[index + 1].setMonth(String.valueOf(monthDropdown.getSelectedItem()));
+//                newBookWithNewPage[index + 1].setYear(String.valueOf(yearDropdown.getSelectedItem()));
+//                newBookWithNewPage[index + 1].setImportance(String.valueOf(importanceDropDown.getSelectedItem()));
+//                newBookWithNewPage[index + 1].setExtraInfo(extraInfo.getText());
+
+
+            }
+        }
+
         System.out.println(Arrays.toString(theChoresBook));
     }
 
-    public void dummyData()
-    {
-        categoryDropDown.setSelectedItem("personal");
-        dayDropdown.setSelectedItem(25);
-        //monthDropdown.setSelectedItem("August");
 
-        //theChoresBook[theChoresBook.length - 1].setMonth(monthDropdown.setSelectedItem("August"));
-    }
-
-
+//    public void dummyData()
+//    {
+//        for (int i = 0; i < 6; i++)
+//        {
+//            // set all values of new pages to dummy data
+//            theChoresBook[index + 1].setTheTask("Task 1");
+//            theChoresBook[index + 1].setMonth(monthArray[0]);
+//            theChoresBook[index + 1].setDay(dayArray[0]);
+//            theChoresBook[index + 1].setYear(yearArray[0]);
+//            theChoresBook[index + 1].setImportance(importanceArray[0]);
+//            theChoresBook[index + 1].setCategory(categoryArray[0]);
+//            theChoresBook[index + 1].setExtraInfo("Include a more detailed description of your task.");
+//
+//
+//
+//        }
+//    }
 
     public void nextPageMethod(ActionEvent e)
     {
+        // need dummy data to fill values of the null items of the pages
+
         if(e.getSource() instanceof JButton)
         {
             JButton clicked = (JButton) e.getSource();
@@ -277,8 +291,16 @@ class ChoreBookRunner extends JFrame implements ActionListener
                 if (theChoresBook.length > 1)
                 {
                     index++;
-
                 }
+                // theTask.setText(theChoresBook[index].getTheTask());
+                // we need to set the value of the drop down so it shows when we flip through the book
+                theTask.setText(theChoresBook[index].getTheTask());
+                monthDropdown.setSelectedItem(theChoresBook[index].getMonth());
+                dayDropdown.setSelectedItem(theChoresBook[index].getDay());
+                yearDropdown.setSelectedItem(theChoresBook[index].getYear());
+                importanceDropDown.setSelectedItem(theChoresBook[index].getImportance());
+                categoryDropDown.setSelectedItem(theChoresBook[index].getCategory());
+                extraInfo.setText(theChoresBook[index].getExtraInfo());
             }
         }
     }
@@ -300,7 +322,8 @@ class ChoreBookRunner extends JFrame implements ActionListener
 
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         edit(e);
         save(e);
         addPage(e);
@@ -309,6 +332,7 @@ class ChoreBookRunner extends JFrame implements ActionListener
 
     public static void main(String[] args)
     {
+
         ChoreBookRunner program = new ChoreBookRunner();
         program.setVisible(true);
     }
