@@ -21,7 +21,13 @@ class ChoreBook
 
     public ChoreBook()
     {
-
+        theTask = "Type your task here!";
+        month = "January";
+        day = "1";
+        year = "2020";
+        importance = "Urgent and Important";
+        category = "Work";
+        extraInfo = "Extra-Info";
     }
 
     public String getTheTask()
