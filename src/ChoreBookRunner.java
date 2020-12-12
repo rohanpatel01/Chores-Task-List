@@ -34,7 +34,11 @@ class ChoreBookRunner extends JFrame implements ActionListener
 
     private int pageNumber = 0;
     private int index = 0;
+    private int theCurrentPage = 0;
 
+    /***
+     * This will create a brand new ChoreBook page in the theChoresBook array when the add method is called
+     */
     public void createPageForBook()
     {
         for (int i = 0; i < theChoresBook.length; i++)
@@ -43,6 +47,10 @@ class ChoreBookRunner extends JFrame implements ActionListener
         }
     }
 
+    /***
+     * This is the ChoreBookRunner
+     * The Constructor
+     */
     public ChoreBookRunner()  //constructor
     {
         setupWindow();
@@ -186,7 +194,7 @@ class ChoreBookRunner extends JFrame implements ActionListener
 
         thePageNumber = new JLabel();
         thePageNumber.setBounds(440,640,200,40);
-        thePageNumber.setText("Page 0");
+        thePageNumber.setText("Page #: 1");
         thePageNumber.setFont(new Font("Arial", Font.BOLD,30));
         thePageNumber.setOpaque(true);
         thePageNumber.setBackground(Color.WHITE);
@@ -202,8 +210,9 @@ class ChoreBookRunner extends JFrame implements ActionListener
     }
 
     /***
-     *
-     * @param e
+     * Every time the edit button is clicked this method runs
+     * This methods calls the enableAndDisable Method
+     * @param e: This is the action listener so we can tell what button the user clicked
      */
     public void edit(ActionEvent e)
     {
@@ -217,6 +226,10 @@ class ChoreBookRunner extends JFrame implements ActionListener
         }
     }
 
+    /***
+     *  This method will save all the values on the screen to the theChoresBook array when save button is clicked
+     * @param e: This is the action listener so we can tell what button the user clicked
+     */
     public void save(ActionEvent e)
     {
         if(e.getSource() instanceof  JButton)
@@ -236,6 +249,12 @@ class ChoreBookRunner extends JFrame implements ActionListener
         }
     }
     // fill in the arrays of the new page with dummy data
+
+    /***
+     * This will create a new array and copy all the things into that array from the theChoresBook array
+     * This methods is suppose to create new pages in the theChoresBook array
+     * @param e: This is the action listener so we can tell what button the user clicked
+     */
     public void addPage(ActionEvent e)
     {
         if(e.getSource() instanceof JButton)
@@ -271,22 +290,25 @@ class ChoreBookRunner extends JFrame implements ActionListener
     }
 
 
-
+    /***
+     * This will move one page up in the theChoresBook array
+     * and will call the newDisplay Method
+     * @param e: This is the action listener so we can tell what button the user clicked
+     */
     public void nextPageMethod(ActionEvent e)
     {
-        // need dummy data to fill values of the null items of the pages
-
         if(e.getSource() instanceof JButton)
         {
             JButton clicked = (JButton) e.getSource();
             if (clicked.equals(nextPage))
             {
-                if (theChoresBook.length > 1 && index != theChoresBook.length -1 )
+                if (theChoresBook.length > 1 && index != theChoresBook.length - 1 )
                 {
 
                     index++;
                     newDisplay();
-                    thePageNumber.setText("Page #:" + index );
+                    thePageNumber.setText("Page #:" + (index + 1));
+                    theCurrentPage++;
                 }
                 // theTask.setText(theChoresBook[index].getTheTask());
                 // we need to set the value of the drop down so it shows when we flip through the book
@@ -295,7 +317,10 @@ class ChoreBookRunner extends JFrame implements ActionListener
         }
     }
 
-
+    /***
+     * This will delete the page the user wants to delete from theChoresBook array
+     * @param e: This is the action listener so we can tell what button the user clicked
+     */
     public void deletePage(ActionEvent e)
     {
         if (e.getSource() instanceof JButton)
@@ -306,33 +331,50 @@ class ChoreBookRunner extends JFrame implements ActionListener
                 ChoreBook[] newBookWithoutNewPage = new ChoreBook[theChoresBook.length - 1];
 
                 // copies all info from original array to new array
-                for (int i = 0; i < theChoresBook.length; i++)
+                if(theChoresBook.length > 1)
                 {
-                    if (i != pageNumber)
+                    for (int i = 0; i < theChoresBook.length; i++)
                     {
-                        newBookWithoutNewPage[i] = theChoresBook[i];
+                        if (i != theCurrentPage)
+                        {
+                            if (i == newBookWithoutNewPage.length)
+                                newBookWithoutNewPage[i-1] = theChoresBook[i];
+                            else
+                                newBookWithoutNewPage[i] = theChoresBook[i];
+                        }
+
+
                     }
 
+                    // make the original array update to the new longer array with new page
+                    theChoresBook = newBookWithoutNewPage;
+                    pageNumber--;
+
+                    // sets new index
+                    int newIndex = 0;
+                    if(theChoresBook.length == 2)
+                    {
+                        newIndex = index + 1;
+                    }
+
+                    newIndex = index - 1;
+                    index = newIndex;
+
+                    newDisplay();
+
+                    System.out.println("The length of the chore Length" + theChoresBook.length);
                 }
 
-                // make the original array update to the new longer array with new page
-                theChoresBook = newBookWithoutNewPage;
-                pageNumber--;
-                //theChoresBook[pageNumber] = new ChoreBook();
-
-                // sets new index
-                int newIndex = index;
-                newIndex = index - 1;
-                index = newIndex;
-
-                newDisplay();
-
-                System.out.println("The length of the chore Length" + theChoresBook.length);
 
             }
         }
     }
 
+    /**
+     * Move back one value on theChoresBook array
+     * call the newDisplay method
+     * @param e: This is the action listener so we can tell what button the user clicked
+     */
     public void previousPageMethod(ActionEvent e)
     {
         if(e.getSource() instanceof JButton)
@@ -341,13 +383,12 @@ class ChoreBookRunner extends JFrame implements ActionListener
             if (clicked.equals(previousPage))
             {
 
-                if (index != 0)
+                if (index > 0)
                 {
                     index--;
-                    System.out.println("PageNumber:" + index);
                     newDisplay();
-                    thePageNumber.setText("Page #:" + index);
-
+                    thePageNumber.setText("Page #:" + (index + 1));
+                    theCurrentPage--;
                 }
 
             }
@@ -355,7 +396,7 @@ class ChoreBookRunner extends JFrame implements ActionListener
     }
 
     /***
-     * Puts the book info up to the screen
+     * This will put up all the info from theChoresBook array index up on the window
      */
     public void newDisplay()
     {
@@ -386,6 +427,10 @@ class ChoreBookRunner extends JFrame implements ActionListener
     }
 
 
+    /**
+     * This is were we pass the action listener into the methods
+     * @param e This is the action listener so we can tell what button the user clicked
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -397,6 +442,10 @@ class ChoreBookRunner extends JFrame implements ActionListener
         deletePage(e);
     }
 
+    /**
+     * This is the main method
+     * @param args: I honestly don't know what this does
+     */
     public static void main(String[] args)
     {
 
